@@ -5,8 +5,8 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Features", href: "#features" },
-  { label: "Stories", href: "#gallery" },
-  { label: "Film", href: "#video" },
+  { label: "Our Story", href: "#story" },
+  { label: "How It Works", href: "#how-it-works" },
   { label: "Pricing", href: "#pricing" },
   { label: "Contact", href: "#contact" },
 ];
@@ -16,10 +16,7 @@ export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -29,31 +26,18 @@ export default function Navigation() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? "bg-parchment/90 backdrop-blur-md border-b border-ink/5"
+            ? "bg-parchment/95 backdrop-blur-md border-b border-ink/5 shadow-sm"
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="flex items-center justify-between h-20">
+        <div className="max-w-6xl mx-auto px-6 md:px-12">
+          <div className="flex items-center justify-between h-18 md:h-20">
             {/* Logo */}
-            <a href="/" className="flex items-center gap-3">
-              <div className="w-8 h-8 relative">
-                <svg viewBox="0 0 100 100" className="w-full h-full">
-                  <rect width="100" height="100" rx="20" fill="#1A1A1A" />
-                  <text
-                    x="50"
-                    y="65"
-                    textAnchor="middle"
-                    fill="#F5F0E8"
-                    fontFamily="Playfair Display"
-                    fontSize="45"
-                    fontWeight="700"
-                  >
-                    Z
-                  </text>
-                </svg>
+            <a href="/" className="flex items-center gap-3 group">
+              <div className="w-9 h-9 md:w-10 md:h-10 relative rounded-lg overflow-hidden bg-ink flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                <span className="font-display text-lg md:text-xl text-parchment font-bold">Z</span>
               </div>
-              <span className="font-display text-xl text-ink">
+              <span className="font-display text-lg md:text-xl text-ink tracking-tight">
                 Zim<em className="italic text-gold">Ledger</em>
               </span>
             </a>
@@ -64,30 +48,29 @@ export default function Navigation() {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="font-sans text-sm tracking-wider text-ink/60 hover:text-ink transition-colors duration-300 relative group"
+                  className="font-sans text-[13px] tracking-wide text-ink/50 hover:text-ink transition-colors duration-300 relative group py-1"
                 >
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300" />
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300" />
                 </a>
               ))}
             </div>
 
-            {/* CTA */}
-            <div className="hidden md:block">
-              <a
-                href="#pricing"
-                className="px-6 py-2.5 bg-ink text-parchment font-sans text-sm tracking-wider hover:bg-gold transition-colors duration-300"
-              >
-                Get Started
-              </a>
-            </div>
+            {/* Desktop CTA */}
+            <a
+              href="#pricing"
+              className="hidden md:inline-flex px-5 py-2.5 bg-ink text-parchment font-sans text-[13px] tracking-wide hover:bg-gold transition-colors duration-300"
+            >
+              Start Free Trial
+            </a>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-ink"
+              className="md:hidden p-2 text-ink hover:text-gold transition-colors"
+              aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -99,13 +82,13 @@ export default function Navigation() {
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex flex-col items-center justify-center h-full gap-8">
+        <div className="flex flex-col items-center justify-center h-full gap-6 pt-20">
           {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="font-display text-3xl text-ink hover:text-gold transition-colors"
+              className="font-display text-2xl text-ink hover:text-gold transition-colors"
             >
               {link.label}
             </a>
@@ -113,9 +96,9 @@ export default function Navigation() {
           <a
             href="#pricing"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="mt-8 px-8 py-3 bg-ink text-parchment font-sans text-sm tracking-wider"
+            className="mt-6 px-8 py-3 bg-ink text-parchment font-sans text-sm tracking-wider"
           >
-            Get Started
+            Start Free Trial
           </a>
         </div>
       </div>

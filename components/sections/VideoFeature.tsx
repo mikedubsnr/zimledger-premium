@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,143 +8,87 @@ import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const stats = [
+  { value: "17M+", label: "Zimbabwe Population" },
+  { value: "90.6%", label: "Mobile Penetration" },
+  { value: "6.45M", label: "Internet Users" },
+  { value: "12K+", label: "Businesses on ZimLedger" },
+];
+
 export default function VideoFeature() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useGSAP(() => {
-    if (!sectionRef.current || !overlayRef.current) return;
-
-    gsap.fromTo(
-      overlayRef.current,
-      { opacity: 1 },
-      {
-        opacity: 0,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "center center",
-          scrub: 1,
-        },
-      }
-    );
+    if (!sectionRef.current) return;
 
     gsap.fromTo(
       ".video-title",
-      { y: 60, opacity: 0 },
+      { y: 50, opacity: 0 },
       {
         y: 0,
         opacity: 1,
-        duration: 1.2,
+        duration: 1,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 60%",
-        },
+        scrollTrigger: { trigger: sectionRef.current, start: "top 65%" },
       }
     );
   }, { scope: sectionRef });
 
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
   return (
-    <section ref={sectionRef} className="relative min-h-screen bg-ink overflow-hidden">
-      {/* Video Background */}
-      <div className="absolute inset-0">
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover"
-          loop
-          muted
-          playsInline
-          poster="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=1920&q=80"
-          onLoadedData={() => setIsLoaded(true)}
-        >
-          <source
-            src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-city-traffic-at-night-11-large.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div ref={overlayRef} className="absolute inset-0 bg-ink/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/30" />
+    <section ref={sectionRef} className="relative bg-ink overflow-hidden">
+      {/* Video container */}
+      <div className="relative w-full aspect-video max-h-[70vh]">
+        <iframe
+          src={`https://www.youtube.com/embed/MEgVutW2j4c?autoplay=0&mute=1&loop=1&playlist=MEgVutW2j4c&controls=0&modestbranding=1&rel=0`}
+          title="ZimLedger — Built in Zimbabwe"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="absolute inset-0 w-full h-full"
+        />
+        <div className="absolute inset-0 bg-ink/40 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-8 text-center">
-        <span className="font-sans text-xs tracking-[0.4em] uppercase text-gold mb-8 block">
+      {/* Content overlay */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pointer-events-none">
+        <span className="video-title font-sans text-[11px] tracking-[0.3em] uppercase text-gold mb-6 block">
           Cinematic Feature
         </span>
 
-        <h2 className="video-title font-display text-5xl md:text-7xl lg:text-8xl text-white max-w-5xl leading-[0.95] mb-8">
-          The Rhythm of
-          <br />
+        <h2 className="video-title font-display text-4xl md:text-6xl lg:text-7xl text-white max-w-4xl leading-[1.05] mb-6">
+          The Rhythm of{" "}
           <em className="italic text-gold">Zimbabwean Business</em>
         </h2>
 
-        <p className="video-title font-body text-lg md:text-xl text-white/60 max-w-2xl mb-12 leading-relaxed">
-          From the bustling markets of Mbare to the boardrooms of Harare, 
+        <p className="video-title font-body text-base md:text-lg text-white/50 max-w-xl mb-10 leading-relaxed">
+          From the bustling markets of Mbare to the boardrooms of Harare,
           witness the pulse of enterprise that drives our nation forward.
         </p>
 
-        {/* Controls */}
-        <div className="flex items-center gap-6">
-          <button
-            onClick={togglePlay}
-            className="group flex items-center justify-center w-16 h-16 rounded-full border border-white/30 hover:border-gold hover:bg-gold/10 transition-all duration-300"
-          >
-            {isPlaying ? (
-              <Pause className="w-6 h-6 text-white group-hover:text-gold transition-colors" />
-            ) : (
-              <Play className="w-6 h-6 text-white group-hover:text-gold transition-colors ml-1" />
-            )}
-          </button>
+        {/* Watch on YouTube button */}
+        <a
+          href="https://www.youtube.com/watch?v=MEgVutW2j4c"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pointer-events-auto inline-flex items-center gap-2 px-6 py-3 border border-white/30 text-white font-sans text-sm tracking-wide hover:bg-white/10 transition-colors"
+        >
+          <Play className="w-4 h-4" />
+          Watch on YouTube
+        </a>
+      </div>
 
-          <button
-            onClick={toggleMute}
-            className="group flex items-center justify-center w-12 h-12 rounded-full border border-white/20 hover:border-gold hover:bg-gold/10 transition-all duration-300"
-          >
-            {isMuted ? (
-              <VolumeX className="w-5 h-5 text-white/60 group-hover:text-gold transition-colors" />
-            ) : (
-              <Volume2 className="w-5 h-5 text-white/60 group-hover:text-gold transition-colors" />
-            )}
-          </button>
-        </div>
-
-        {/* Stats */}
-        <div className="absolute bottom-16 left-0 right-0 px-8">
-          <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { value: "5M+", label: "Transactions Recorded" },
-              { value: "12K", label: "Active Businesses" },
-              { value: "$40M", label: "GDP Impact" },
-              { value: "98%", label: "Uptime Guarantee" },
-            ].map((stat) => (
+      {/* Stats bar */}
+      <div className="relative z-10 bg-ink border-t border-white/5">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 py-10 md:py-14">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+            {stats.map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="font-display text-3xl md:text-4xl text-gold mb-2">
+                <div className="font-display text-2xl md:text-3xl text-gold mb-1.5">
                   {stat.value}
                 </div>
-                <div className="font-sans text-xs tracking-wider uppercase text-white/40">
+                <div className="font-sans text-[11px] tracking-wider uppercase text-white/30">
                   {stat.label}
                 </div>
               </div>

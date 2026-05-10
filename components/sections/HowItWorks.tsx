@@ -12,7 +12,7 @@ const steps = [
     number: "01",
     title: "Set up your shop",
     description:
-      "Add your products, your starting stock, and your preferred currency. Takes less than five minutes.",
+      "Add your products, starting stock, and preferred currency. Takes less than five minutes.",
   },
   {
     number: "02",
@@ -34,96 +34,59 @@ export default function HowItWorks() {
   useGSAP(() => {
     if (!sectionRef.current) return;
 
-    const steps = sectionRef.current.querySelectorAll(".step-item");
-    const lines = sectionRef.current.querySelectorAll(".step-line");
-
-    steps.forEach((step, index) => {
+    const items = sectionRef.current.querySelectorAll(".step-item");
+    items.forEach((item, index) => {
       gsap.fromTo(
-        step,
-        { x: index % 2 === 0 ? -60 : 60, opacity: 0 },
+        item,
+        { y: 40, opacity: 0 },
         {
-          x: 0,
+          y: 0,
           opacity: 1,
-          duration: 1,
+          duration: 0.8,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: step,
-            start: "top 80%",
-          },
-        }
-      );
-    });
-
-    lines.forEach((line) => {
-      gsap.fromTo(
-        line,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: line,
-            start: "top 80%",
-          },
+          scrollTrigger: { trigger: item, start: "top 85%" },
+          delay: index * 0.15,
         }
       );
     });
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="py-32 px-8 bg-parchment">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-24">
-          <span className="font-sans text-xs tracking-[0.3em] uppercase text-gold mb-4 block">
-            How It Works
-          </span>
-          <h2 className="editorial-heading text-5xl md:text-7xl">
-            Three steps.
-            <br />
-            <em className="italic">That is it.</em>
+    <section id="how-it-works" ref={sectionRef} className="section-padding bg-parchment">
+      <div className="container-editorial">
+        <div className="text-center mb-16 md:mb-20">
+          <span className="label-upper mb-4 block">How It Works</span>
+          <h2 className="editorial-heading text-display-md mb-5">
+            Three steps. <em className="italic">That is it.</em>
           </h2>
-          <p className="mt-6 font-body text-lg text-ink/50 max-w-xl mx-auto">
+          <p className="editorial-body max-w-xl mx-auto">
             No accountant. No setup wizard with forty fields. Open the app, record what you do, get clarity tomorrow morning.
           </p>
         </div>
 
-        {/* Steps */}
-        <div className="relative">
-          {/* Connecting Line */}
-          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-ink/10 md:-translate-x-px">
-            <div className="step-line absolute top-0 left-0 w-full h-full bg-gold origin-top" />
-          </div>
-
-          <div className="space-y-24">
-            {steps.map((step, index) => (
-              <div
-                key={step.number}
-                className={`step-item relative flex items-start gap-8 md:gap-16 ${
-                  index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
-              >
-                {/* Number Circle */}
-                <div className="relative z-10 flex-shrink-0 w-16 h-16 rounded-full bg-parchment border-2 border-gold flex items-center justify-center">
-                  <span className="font-display text-xl text-gold">{step.number}</span>
-                </div>
-
-                {/* Content */}
-                <div className={`flex-1 pt-2 ${index % 2 === 0 ? "md:text-left" : "md:text-right"}`}>
-                  <h3 className="font-display text-3xl md:text-4xl text-ink mb-4">
-                    {step.title}
-                  </h3>
-                  <p className="font-body text-lg text-ink/50 max-w-md leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-
-                {/* Spacer for alternating layout */}
-                <div className="hidden md:block flex-1" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-10">
+          {steps.map((step, index) => (
+            <div
+              key={step.number}
+              className="step-item relative text-center md:text-left"
+            >
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full border border-gold/30 mb-6">
+                <span className="font-display text-lg text-gold">{step.number}</span>
               </div>
-            ))}
-          </div>
+
+              <h3 className="font-display text-xl md:text-2xl text-ink mb-3">
+                {step.title}
+              </h3>
+
+              <p className="font-body text-body-sm text-ink-muted leading-relaxed max-w-sm mx-auto md:mx-0">
+                {step.description}
+              </p>
+
+              {index < steps.length - 1 && (
+                <div className="hidden md:block absolute top-6 left-full w-full h-px bg-ink/8 -translate-x-1/2" />
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>

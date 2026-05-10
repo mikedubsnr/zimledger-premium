@@ -46,20 +46,16 @@ export default function Testimonials() {
     if (!sectionRef.current) return;
 
     const cards = sectionRef.current.querySelectorAll(".testimonial-card");
-
     cards.forEach((card, index) => {
       gsap.fromTo(
         card,
-        { y: 40, opacity: 0 },
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.7,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
-          },
+          scrollTrigger: { trigger: card, start: "top 88%" },
           delay: index * 0.1,
         }
       );
@@ -67,42 +63,37 @@ export default function Testimonials() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="py-32 px-8 bg-parchment">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-20">
-          <span className="font-sans text-xs tracking-[0.3em] uppercase text-gold mb-4 block">
-            Testimonials
-          </span>
-          <h2 className="editorial-heading text-5xl md:text-7xl">
-            Voices from
-            <br />
+    <section ref={sectionRef} className="section-padding bg-parchment">
+      <div className="container-editorial">
+        <div className="text-center mb-16 md:mb-20">
+          <span className="label-upper mb-4 block">Testimonials</span>
+          <h2 className="editorial-heading text-display-md">
+            Voices from{" "}
             <em className="italic">the ground</em>
           </h2>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {testimonials.map((t) => (
             <div
               key={t.name}
-              className="testimonial-card group p-8 md:p-10 bg-parchment-dark rounded-lg border border-ink/5 hover:border-gold/20 transition-all duration-500"
+              className="testimonial-card group p-7 md:p-9 bg-parchment-warm border border-ink/[0.04] hover:border-gold/15 transition-all duration-500"
             >
-              <Quote className="w-8 h-8 text-gold/30 mb-6 group-hover:text-gold/60 transition-colors" />
+              <Quote className="w-6 h-6 text-gold/20 mb-5 group-hover:text-gold/40 transition-colors" strokeWidth={1.5} />
 
-              <blockquote className="font-body text-lg text-ink/70 leading-relaxed mb-8">
+              <blockquote className="font-body text-body-sm text-ink-muted leading-relaxed mb-7">
                 "{t.quote}"
               </blockquote>
 
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-ink/10 flex items-center justify-center">
-                  <span className="font-display text-lg text-ink/40">
+              <div className="flex items-center gap-3 pt-5 border-t border-ink/[0.04]">
+                <div className="w-10 h-10 rounded-full bg-ink/8 flex items-center justify-center flex-shrink-0">
+                  <span className="font-display text-sm text-ink/40">
                     {t.name.split(" ").map((n) => n[0]).join("")}
                   </span>
                 </div>
                 <div>
-                  <p className="font-display text-base text-ink">{t.name}</p>
-                  <p className="font-sans text-xs text-ink/40">
+                  <p className="font-display text-sm text-ink">{t.name}</p>
+                  <p className="font-sans text-[11px] text-ink/35">
                     {t.role}, {t.business}
                   </p>
                 </div>

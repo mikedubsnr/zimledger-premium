@@ -1,173 +1,137 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ArrowDown } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
+
+const trustPoints = [
+  "No credit card required",
+  "7-day free trial",
+  "Cancel anytime",
+];
 
 export default function SpotlightHero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const spotlightRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    const tl = gsap.timeline({ delay: 0.5 });
+    const tl = gsap.timeline({ delay: 0.3 });
 
-    tl.fromTo(
-      ".hero-line",
-      { y: 100, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.2,
-        stagger: 0.15,
-        ease: "power4.out",
-      }
-    )
-      .fromTo(
-        ".hero-subtitle",
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        "-=0.4"
-      )
-      .fromTo(
-        ".hero-cta",
-        { y: 20, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: "power3.out",
-        },
-        "-=0.3"
-      );
+    tl.fromTo(".hero-label", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" })
+      .fromTo(".hero-headline", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power4.out" }, "-=0.4")
+      .fromTo(".hero-sub", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.6")
+      .fromTo(".hero-ctas", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, "-=0.4")
+      .fromTo(".hero-trust", { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, "-=0.3");
   }, { scope: containerRef });
 
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-parchment"
+      className="relative min-h-screen flex items-center bg-parchment overflow-hidden"
     >
-      {/* Spotlight Effect */}
-      <div
-        ref={spotlightRef}
-        className="pointer-events-none fixed inset-0 z-50 mix-blend-overlay"
-        style={{
-          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(201, 169, 110, 0.15), transparent 40%)`,
-        }}
-      />
-
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage: `repeating-linear-gradient(
-              0deg,
-              transparent,
-              transparent 40px,
-              #1A1A1A 40px,
-              #1A1A1A 41px
-            )`,
-          }}
-        />
-      </div>
-
-      {/* Zimbabwe Colors Accent */}
-      <div className="absolute top-0 left-0 right-0 h-1 flex">
+      {/* Subtle top accent line */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] flex">
         <div className="flex-1 bg-zim-green" />
         <div className="flex-1 bg-zim-yellow" />
         <div className="flex-1 bg-zim-red" />
         <div className="flex-1 bg-zim-black" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 text-center px-8 max-w-6xl mx-auto">
-        <div className="overflow-hidden mb-4">
-          <p className="hero-line font-sans text-xs md:text-sm tracking-[0.4em] uppercase text-gold">
-            Built in Zimbabwe · For Zimbabwe
-          </p>
+      {/* Background decorative element */}
+      <div className="absolute right-0 top-1/4 w-[600px] h-[600px] rounded-full bg-gold/[0.03] blur-3xl pointer-events-none" />
+      <div className="absolute left-0 bottom-1/4 w-[400px] h-[400px] rounded-full bg-zim-green/[0.02] blur-3xl pointer-events-none" />
+
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 pt-28 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left: Content */}
+          <div className="max-w-xl">
+            <p className="hero-label label-upper mb-6">
+              Built in Zimbabwe · For Zimbabwe
+            </p>
+
+            <h1 className="hero-headline font-display text-display-lg text-ink mb-6">
+              Run your business
+              <br />
+              from <em className="italic text-gold">one place</em>
+            </h1>
+
+            <p className="hero-sub font-body text-body-lg text-ink-muted mb-8 max-w-md">
+              Track income in USD and ZiG. Manage stock, send invoices,
+              chase debts via WhatsApp, and know your numbers —
+              all from a single dashboard built for Zimbabwean SMEs.
+            </p>
+
+            <div className="hero-ctas flex flex-col sm:flex-row items-start gap-4 mb-8">
+              <a
+                href="#pricing"
+                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-ink text-parchment font-sans text-sm tracking-wide hover:bg-gold transition-colors duration-300"
+              >
+                Start Free Trial
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </a>
+              <a
+                href="#features"
+                className="inline-flex items-center px-7 py-3.5 border border-ink/15 text-ink font-sans text-sm tracking-wide hover:border-gold hover:text-gold transition-all duration-300"
+              >
+                View Features
+              </a>
+            </div>
+
+            <div className="hero-trust flex flex-wrap items-center gap-x-5 gap-y-2">
+              {trustPoints.map((point) => (
+                <div key={point} className="flex items-center gap-1.5">
+                  <Check className="w-3.5 h-3.5 text-zim-green" />
+                  <span className="font-sans text-xs text-ink/40">{point}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: Stats / Social Proof */}
+          <div className="hidden lg:block">
+            <div className="relative">
+              {/* Stats card */}
+              <div className="bg-white/60 backdrop-blur-sm border border-ink/5 rounded-lg p-8 shadow-sm">
+                <div className="grid grid-cols-2 gap-8">
+                  <div>
+                    <p className="font-display text-3xl text-ink mb-1">17M+</p>
+                    <p className="font-sans text-xs text-ink/40 uppercase tracking-wider">Zimbabwe Population</p>
+                  </div>
+                  <div>
+                    <p className="font-display text-3xl text-ink mb-1">90.6%</p>
+                    <p className="font-sans text-xs text-ink/40 uppercase tracking-wider">Mobile Penetration</p>
+                  </div>
+                  <div>
+                    <p className="font-display text-3xl text-ink mb-1">6.45M</p>
+                    <p className="font-sans text-xs text-ink/40 uppercase tracking-wider">Internet Users</p>
+                  </div>
+                  <div>
+                    <p className="font-display text-3xl text-gold mb-1">12K+</p>
+                    <p className="font-sans text-xs text-ink/40 uppercase tracking-wider">Businesses on ZimLedger</p>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-ink/5">
+                  <div className="flex items-center gap-3">
+                    <div className="flex -space-x-2">
+                      {["bg-zim-green", "bg-zim-yellow", "bg-zim-red", "bg-ink"].map((color, i) => (
+                        <div key={i} className={`w-8 h-8 rounded-full ${color} border-2 border-parchment`} />
+                      ))}
+                    </div>
+                    <p className="font-sans text-sm text-ink/50">
+                      Trusted by shop owners, salons, hardware stores & market vendors
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Decorative accent */}
+              <div className="absolute -bottom-3 -right-3 w-full h-full border border-gold/20 rounded-lg -z-10" />
+            </div>
+          </div>
         </div>
-
-        <div className="overflow-hidden">
-          <h1 className="hero-line font-display text-6xl md:text-8xl lg:text-9xl text-ink leading-[0.9] tracking-tight">
-            Zim
-            <em className="italic text-gold">Ledger</em>
-          </h1>
-        </div>
-
-        <div className="overflow-hidden mt-4">
-          <h2 className="hero-line font-display text-3xl md:text-5xl lg:text-6xl text-ink/80 leading-[1.1]">
-            The definitive platform
-            <br />
-            for <em className="italic">Zimbabwean enterprise</em>
-          </h2>
-        </div>
-
-        <div className="overflow-hidden mt-8">
-          <p className="hero-subtitle font-body text-lg md:text-xl text-ink/50 max-w-2xl mx-auto leading-relaxed">
-            Track income in USD and ZiG. Manage inventory. Generate invoices.
-            Send WhatsApp reminders. All from one elegant dashboard.
-          </p>
-        </div>
-
-        <div className="hero-cta mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="#features"
-            className="group px-8 py-4 bg-ink text-parchment font-sans text-sm tracking-wider uppercase hover:bg-gold transition-colors duration-300"
-          >
-            Start Free Trial
-          </a>
-          <a
-            href="#video"
-            className="group px-8 py-4 border border-ink/20 text-ink font-sans text-sm tracking-wider uppercase hover:border-gold hover:text-gold transition-colors duration-300"
-          >
-            Watch the Film
-          </a>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-        <span className="font-sans text-xs tracking-wider uppercase text-ink/30">
-          Scroll
-        </span>
-        <ArrowDown className="w-4 h-4 text-ink/30 animate-bounce" />
-      </div>
-
-      {/* Side Text */}
-      <div className="absolute left-8 top-1/2 -translate-y-1/2 hidden lg:block">
-        <p
-          className="font-sans text-xs tracking-[0.3em] uppercase text-ink/20"
-          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-        >
-          Financial clarity for every Zimbabwean business
-        </p>
-      </div>
-
-      <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block">
-        <p
-          className="font-sans text-xs tracking-[0.3em] uppercase text-ink/20"
-          style={{ writingMode: "vertical-rl" }}
-        >
-          Est. 2024 · Harare, Zimbabwe
-        </p>
       </div>
     </section>
   );

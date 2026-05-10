@@ -4,12 +4,12 @@ import SmoothScroll from "@/components/ui/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "ZimLedger — Built in Zimbabwe, For Zimbabwe",
-  description: "The definitive financial platform for Zimbabwean businesses. Track income, manage inventory, generate invoices, and grow with confidence.",
-  keywords: ["Zimbabwe", "business", "accounting", "SME", "EcoCash", "ZiG", "USD", "invoices", "inventory"],
+  description: "The financial platform for Zimbabwean SMEs. Track income in USD & ZiG, manage inventory, send invoices, and grow your business.",
+  keywords: ["Zimbabwe", "business", "accounting", "SME", "EcoCash", "ZiG", "USD", "invoices", "inventory", "tuckshop", "spaza"],
   authors: [{ name: "ZimLedger" }],
   openGraph: {
     title: "ZimLedger — Built in Zimbabwe, For Zimbabwe",
-    description: "The definitive financial platform for Zimbabwean businesses.",
+    description: "The financial platform for Zimbabwean SMEs.",
     type: "website",
     locale: "en_ZW",
   },
@@ -23,7 +23,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-parchment">
-        <div className="grain-overlay" />
         <SmoothScroll>
           {children}
         </SmoothScroll>
